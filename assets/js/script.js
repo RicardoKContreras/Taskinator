@@ -1,3 +1,7 @@
+// variables to select the task in progress and task completed columns
+var tasksInProgressEl = document.querySelector("#tasks-in-progress");
+var tasksCompletedEl = document.querySelector("#tasks-completed");
+
 //Variable for a reference to id="page-content" inside of the main element.
 var pageContentEl = document.querySelector("#page-content");
 
@@ -23,6 +27,18 @@ var taskFormHandler = function(event){
     }
 
     formEl.reset();
+    
+    
+    var isEdit = formEl.hasAttribute("data-task-id");
+    
+    //has data attribute, so get task id and call function to complete edit process
+    if (isEdit) {
+        var taskId = formEl.getAttribute("data-task-id");
+        completeEditTask(taskNameInput, taskTypeInput, taskId);
+    }
+
+    // no data attribute, so create object as normal and pass to createTaskEl function
+    else {
 
     //package up data as an object
     var taskDataObj = {
@@ -31,10 +47,26 @@ var taskFormHandler = function(event){
 
     };
 
-    // send it as an argument to createTaskEl
+    // send it as an argument to createTaskEl basically saying "im going in this function to take this out."
     createTaskEl(taskDataObj);
+}
    
 };
+
+//creating a completeEditTask function to pass through whats being called for in the taskFormHandler function.
+var completeEditTask = function(taskName, taskType, taskId) {
+    //find the matching task list item
+    var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
+
+    //set new values
+    taskSelected.querySelector("h3.task-name").textContent = taskName;
+    taskSelected.querySelector("span.task-type").textContent = taskType;
+
+    alert("Task Updated!");
+
+    formEl.removeAttribute("data-task-id");
+    document.querySelector("#save-task").textContent = "Add Task";
+}
 
 var createTaskEl = function(taskDataObj){
 
@@ -153,7 +185,7 @@ var editTask = function(taskId) {
 
     //this will add the taskId to the data-task-id attribute on the form its self.
     formEl.setAttribute("data-task-id", taskId);
-}
+};
 
 //adding a delete Task Function
 var deleteTask = function(taskId) {
@@ -164,6 +196,13 @@ taskSelected.remove();
 
 };
 
+var taskStatusChangeHandler = function(event) {
+console.log(event.target);
+console.log(event.target.getAttribute("data-task-id"));
+};
+
 formEl.addEventListener("submit", taskFormHandler);
 pageContentEl.addEventListener("click", taskButtonHandler);
+// change event that triggers, as the name implies, any time a form element's value changes.
+pageContentEl.addEventListener("change", taskStatusChangeHandler);
     
