@@ -1,3 +1,6 @@
+//Variable for a reference to id="page-content" inside of the main element.
+var pageContentEl = document.querySelector("#page-content");
+
 //A variable to create a counter that increments by one each time a task is created.
 var taskIdCounter = 0;
 var formEl= document.querySelector("#task-form");
@@ -110,7 +113,57 @@ for (var i = 0; i < statusChoices.length; i++){
 return actionContainerEl;
 };
 
+var taskButtonHandler = function(event) {
+    // get target element from event
+    var targetEl = event.target;
 
+    // edit button was clicked
+    if (targetEl.matches(".edit-btn")){
+        // get the element's task id
+        var taskId = event.target.getAttribute("data-task-id");
+        editTask(taskId);
+    }
+
+    //delete button was clicked
+    else if (targetEl.matches(".delete-btn")) {
+        var taskId = targetEl.getAttribute("data-task-id");
+        deleteTask(taskId);
+    }
+};
+
+//adding an Edit Task Function
+var editTask = function(taskId) {
+    
+
+    //get task list item element
+    var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
+
+    //get content from task namr and type
+    var taskName = taskSelected.querySelector("h3.task-name").textContent;
+    
+    
+    var taskType = taskSelected.querySelector("span.task-type").textContent;
+    
+    //selects the input form and dropdown to display again when edit button is clicked
+    document.querySelector("input[name='task-name']").value = taskName;
+    document.querySelector("select[name='task-type']").value = taskType;
+    
+    //Selects the Add Task button and turns the "add Task" text to "Save Task" when edit button is clicked.
+    document.querySelector("#save-task").textContent = "Save Task";
+
+    //this will add the taskId to the data-task-id attribute on the form its self.
+    formEl.setAttribute("data-task-id", taskId);
+}
+
+//adding a delete Task Function
+var deleteTask = function(taskId) {
+    //allows us to find a different element with the same data-task-id attriubute. A little more specific when queryselecting 
+    var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
+taskSelected.remove();
+
+
+};
 
 formEl.addEventListener("submit", taskFormHandler);
+pageContentEl.addEventListener("click", taskButtonHandler);
     
