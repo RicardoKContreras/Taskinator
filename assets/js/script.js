@@ -10,6 +10,9 @@ var taskIdCounter = 0;
 var formEl= document.querySelector("#task-form");
 var tasksToDoEl = document.querySelector("#tasks-to-do");
 
+// Creating task array variable for Local storage since local storage only picks up strings.
+var tasks = [];
+
 //By adding the event argument to this function, we can use the data and functionality that object holds. We did that when we added event.preventDefault(); to the handler function's code.
 var taskFormHandler = function(event){
     event.preventDefault();
@@ -43,7 +46,8 @@ var taskFormHandler = function(event){
     //package up data as an object
     var taskDataObj = {
         name: taskNameInput,
-        type: taskTypeInput
+        type: taskTypeInput,
+        status: "to do"
 
     };
 
@@ -62,6 +66,15 @@ var completeEditTask = function(taskName, taskType, taskId) {
     taskSelected.querySelector("h3.task-name").textContent = taskName;
     taskSelected.querySelector("span.task-type").textContent = taskType;
 
+    // loop through tasks array and task object with new content
+    // the parseInt() function parses a string argument and returns an integer of the specified mathematical number.
+    for (var i =0; i < tasks.length; i++) {
+        if (tasks[i].id === parseInt(taskId)) {
+            tasks[i].name = taskName;
+            tasks[1].type = taskType;
+        }
+    };
+
     alert("Task Updated!");
 
     formEl.removeAttribute("data-task-id");
@@ -69,6 +82,8 @@ var completeEditTask = function(taskName, taskType, taskId) {
 }
 
 var createTaskEl = function(taskDataObj){
+    console.log(taskDataObj);
+    console.log(taskDataObj.status);
 
  //create list item
  var listItemEl = document.createElement("li");
@@ -88,6 +103,12 @@ var createTaskEl = function(taskDataObj){
  
  //append the <div> to <li>
  listItemEl.appendChild(taskInfoEl);
+
+ // created this to get the id of the newly created DOM element gets added to the task's object as well.
+ taskDataObj.id = taskIdCounter;
+
+ // push() method adds any content between the parentheses to the end of the specified array.
+ tasks.push(taskDataObj);
 
  var taskActionsEl = createTaskActions(taskIdCounter);
  listItemEl.appendChild(taskActionsEl);
@@ -217,6 +238,14 @@ else if (statusValue === "in progress") {
 else if (statusValue === "completed") {
     tasksCompletedEl.appendChild(taskSelected);
 }
+
+//update task's in tasks array
+for (var i = 0; i < tasks.length; i++) {
+    if (tasks[i].id === parseInt(taskId)) {
+        tasks[i].status = statusValue;
+    }
+}
+console.log(tasks);
 
 };
 
