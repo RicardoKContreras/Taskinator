@@ -20,7 +20,7 @@ var taskFormHandler = function(event){
     // We are selecting the <input> element on the page that has a name attribute value of "task-name".
     //single quotes wrap the attribute's value and double quotes wrap the entire selector so it won't fail.
     // Use console.dir(); to find the "value" property and add it at the end of the input as shown.
-    // Now the value of the taskNameInput variable will be the text we entered in the <input>.
+    // Now the value of the taskNameInput variable will be the text we entered in the <input.
     var taskNameInput = document.querySelector("input[name='task-name']").value;
     var taskTypeInput = document.querySelector("select[name='task-type']").value;
 
