@@ -84,7 +84,7 @@ var completeEditTask = function(taskName, taskType, taskId) {
 }
 
 var createTaskEl = function(taskDataObj){
-    console.log(taskDataObj);
+   
     
 
  //create list item
@@ -273,8 +273,17 @@ var saveTasks = function(){
     localStorage.setItem("tasks",JSON.stringify(tasks));
 }
 
+var loadTasks = function() {
+   // Gets task items from localStorage.
+   // Converts tasks from the string format back into an array of objects.
+    //Iterates through a tasks array and creates task elements on the page from it.
+    
+  
+}
+
+
 formEl.addEventListener("submit", taskFormHandler);
 pageContentEl.addEventListener("click", taskButtonHandler);
 // change event that triggers, as the name implies, any time a form element's value changes.
 pageContentEl.addEventListener("change", taskStatusChangeHandler);
-    
+    loadTasks();
